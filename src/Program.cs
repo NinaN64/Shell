@@ -24,7 +24,7 @@ class Program
     {
         List<string> pathVariable =
         Environment.GetEnvironmentVariable("PATH").Split(':').ToList();
-        var TypeOfCommands = new HashSet<string> { "type", "exit", "echo" };
+        var TypeOfCommands = new HashSet<string> { "type", "exit", "echo", "pwd"};
 
         while(true)
         {
@@ -58,6 +58,21 @@ class Program
             else if(firstCommand == "echo")
             {
                 Console.WriteLine(command.Substring(5));
+            }
+            else if(firstCommand == "pwd")
+            {
+                Console.WriteLine(Directory.GetCurrentDirectory());
+            }
+            else if(firstCommand == "cd")
+            {
+                if(Directory.Exists(listOfArg[1]))
+                {
+                    Environment.CurrentDirectory = (listOfArg[1]);
+                }
+                else
+                {
+                    Console.WriteLine("cd: " + listOfArg[1] + ": No such file or directory");
+                }
             }
             else
                 {
