@@ -1,5 +1,25 @@
+using System.Diagnostics;
 class Program
 {
+    
+    static string checkFullPath (List<string> pathVariable, string argument)
+    {
+        string firstOrDefault = null;
+        foreach (var path in pathVariable)
+        {
+            string fullPath = path + "/" + argument;
+            if (!File.Exists(fullPath))
+                continue;
+
+            var mode = File.GetUnixFileMode(fullPath);
+            if ((mode & UnixFileMode.UserExecute) != 0)
+            {
+                firstOrDefault = fullPath;
+                break;
+            }
+        }
+        return firstOrDefault;
+    }
     static void Main()
     {
         List<string> pathVariable =
@@ -10,45 +30,48 @@ class Program
         {
             Console.Write("$ ");
             string command = Console.ReadLine();
+            string firstCommand = command.Split()[0];
+            string[] listOfArg = command.Split();
 
-            if(command.ToLower() == "exit") break;
-            else if(command.StartsWith("type"))
+            if(firstCommand.ToLower() == "exit") break;
+            else if(firstCommand == "type")
             {
                 var argument = command.Substring(5);
-
                 if(TypeOfCommands.Any(x => TypeOfCommands.Contains(argument)))
                 {
                     Console.WriteLine(argument + " is a shell builtin");
                 }
                 else
                 {
-                    string firstOrDefault = null;
-                    foreach (var path in pathVariable)
+                    
+                    string firstOrDefault = checkFullPath(pathVariable, argument);
+                    if (!string.IsNullOrWhiteSpace(firstOrDefault)) 
                     {
-                        string fullPath = path + "/" + argument;
-
-                        if (!File.Exists(fullPath))
-                            continue;
-
-                        var mode = File.GetUnixFileMode(fullPath);
-                        if ((mode & UnixFileMode.UserExecute) != 0)
-                        {
-                            firstOrDefault = fullPath;
-                            break;
-                        }
+                        Console.WriteLine($"{argument} is {firstOrDefault}");
+                    } 
+                    else 
+                    {
+                        Console.WriteLine($"{argument}: not found");
                     }
-
-                if (!string.IsNullOrWhiteSpace(firstOrDefault)) {
-                    Console.WriteLine($"{argument} is {firstOrDefault}");
-                } else {
-                    Console.WriteLine($"{argument}: not found");
-                }
                 }
             }
-            else if(command.StartsWith("echo"))
+            else if(firstCommand == "echo")
+            {
                 Console.WriteLine(command.Substring(5));
+            }
             else
-                Console.WriteLine(command + ": command not found");
+                {
+                    string fullPath = checkFullPath(pathVariable, firstCommand);
+
+                    if (fullPath != null)
+                    {
+                        Process.Start(firstCommand, listOfArg[1..]).WaitForExit();
+                    }
+                    else
+                    {
+                        Console.WriteLine(firstCommand + ": command not found");
+                    }
+                }
         }
         
     }
