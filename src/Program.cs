@@ -25,13 +25,14 @@ class Program
         List<string> pathVariable =
         Environment.GetEnvironmentVariable("PATH").Split(':').ToList();
         var TypeOfCommands = new HashSet<string> { "type", "exit", "echo", "pwd"};
+        var homePath = Environment.GetEnvironmentVariable("HOME");
 
         while(true)
         {
             Console.Write("$ ");
             string command = Console.ReadLine();
-            string firstCommand = command.Split()[0];
-            string[] listOfArg = command.Split();
+            string firstCommand = command.Split(" ")[0];
+            string[] listOfArg = command.Split(" ");
 
             if(firstCommand.ToLower() == "exit") break;
             else if(firstCommand == "type")
@@ -65,7 +66,11 @@ class Program
             }
             else if(firstCommand == "cd")
             {
-                if(Directory.Exists(listOfArg[1]))
+                if(listOfArg[1] == "~")
+                {
+                    Environment.CurrentDirectory = homePath;
+                }
+                else if(Directory.Exists(listOfArg[1]))
                 {
                     Environment.CurrentDirectory = (listOfArg[1]);
                 }
@@ -91,3 +96,4 @@ class Program
         
     }
 }
+ 
