@@ -6,13 +6,14 @@ class Program
     static void Main()
     {
         CommandDictionary commandDictionary = new CommandDictionary();
+        PathFinder pathFinder = new PathFinder();
         var ListOfCommands = new DefaultCommand[]
         {
             new CdCommand(),
             new EchoCommand(),
             new ExitCommand(),
             new PwdCommand(),
-            new TypeCommand()
+            new TypeCommand(commandDictionary)
         };
 
         foreach(var com in ListOfCommands)
@@ -20,7 +21,7 @@ class Program
             commandDictionary.MakeDictionary(com);
         }
 
-        Shell shell = new Shell();
+        var shell = new Shell(commandDictionary, pathFinder);
         shell.Run();
     }
 }

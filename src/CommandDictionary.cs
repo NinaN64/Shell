@@ -15,7 +15,7 @@ public class CommandDictionary
     
     public DefaultCommand? Get(string name)
     {
-        builtInCommands.TryGetValue(name, out var cmd);
+        builtInCommands.TryGetValue(name, out DefaultCommand? cmd);
         return cmd;
     }
 }

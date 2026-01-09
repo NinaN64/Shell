@@ -5,6 +5,12 @@ public class Shell
     private readonly CommandDictionary commandDictionary;
     private readonly PathFinder pathFinder;
 
+    public Shell(CommandDictionary commandDictionary, PathFinder pathFinder)
+    {
+        this.commandDictionary = commandDictionary;
+        this.pathFinder = pathFinder;
+    }
+
     public void Run()
     {
         while(true)
@@ -20,7 +26,10 @@ public class Shell
             if(commandDictionary.isCommandABuiltIn(commandName))
             {
                 var command = commandDictionary.Get(commandName);
-                command.RunCommand(listOfArg[]);
+                if(command != null)
+                {
+                    command.RunCommand(listOfArg);
+                }
                 continue;
             }
 

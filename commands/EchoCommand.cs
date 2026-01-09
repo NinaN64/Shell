@@ -4,9 +4,9 @@ public class EchoCommand : DefaultCommand
 
     public void RunCommand(string[] arg)
     {
-        foreach(string arguments in arg)
+        foreach(string arguments in arg[1..])
         {
-            Console.Write(arguments);
+            Console.WriteLine(arguments);
         }
         
     }
