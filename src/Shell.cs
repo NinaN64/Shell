@@ -1,27 +1,39 @@
+using System.Diagnostics;
+
 public class Shell
 {
+    private readonly CommandDictionary commandDictionary;
+    private readonly PathFinder pathFinder;
+
     public void Run()
     {
-        List<string> pathVariable =
-        Environment.GetEnvironmentVariable("PATH").Split(':').ToList();
-        var TypeOfCommands = new HashSet<string> { "type", "exit", "echo", "pwd"};
-        var homePath = Environment.GetEnvironmentVariable("HOME");
-
         while(true)
         {
             Console.Write("$ ");
-            string command = Console.ReadLine();
-            string firstCommand = command.Split(" ")[0];
-            string[] listOfArg = command.Split(" ");
+            string? input = Console.ReadLine();
 
-            if(command != null)
+            if(string.IsNullOrWhiteSpace(input)) continue;
+
+            string commandName = input.Split(" ")[0];
+            string[] listOfArg = input.Split(" ");
+
+            if(commandDictionary.isCommandABuiltIn(commandName))
             {
-                command.RunCommand();
+                var command = commandDictionary.Get(commandName);
+                command.RunCommand(listOfArg[]);
                 continue;
             }
 
-            Console.WriteLine(firstCommand + ": command not found");
+            string? fullPath = pathFinder.checkFullPath(commandName);
 
+            if (fullPath != null)
+            {
+                Process.Start(commandName, listOfArg[1..]).WaitForExit();
+            }
+            else
+            {
+                Console.WriteLine(commandName + ": command not found");
+            }
         }
     }
 }

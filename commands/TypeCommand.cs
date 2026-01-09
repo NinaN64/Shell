@@ -2,10 +2,11 @@
 public class TypeCommand : DefaultCommand
 {
     public string Name => "type";
+    private readonly CommandDictionary commandDictionary;
 
     public void RunCommand(string[] arg)
     {
-        if(arg[0].isBuilIn) //make a dictionary of commands where this info will be held
+        if(commandDictionary.isCommandABuiltIn(arg[0]))
         {
             Console.WriteLine(arg[0] + " is a shell builtin");
         }
