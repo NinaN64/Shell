@@ -4,10 +4,9 @@ public class EchoCommand : DefaultCommand
 
     public void RunCommand(string[] arg)
     {
-        foreach(string arguments in arg[1..])
-        {
-            Console.WriteLine(arguments);
-        }
-        
+        var argument = string.Join(" ", arg[1..]);
+        argument = argument.Trim('\'', '\"');
+        Console.WriteLine(argument);
     }
+        
 }
