@@ -5,17 +5,17 @@ public class CdCommand : DefaultCommand
 
     public void RunCommand(string arg)
     {
-        if(arg[1] == "~")
+        if(arg == "~")
         {
             Environment.CurrentDirectory = homePath;
         }
-        else if(Directory.Exists(arg[1]))
+        else if(Directory.Exists(arg))
         {
-            Environment.CurrentDirectory = (arg[1]);
+            Environment.CurrentDirectory = (arg);
         }
         else
         {
-            Console.WriteLine("cd: " + arg[1] + ": No such file or directory");
+            Console.WriteLine("cd: " + arg + ": No such file or directory");
         }
     }
 }
