@@ -3,7 +3,7 @@ public class CdCommand : DefaultCommand
     public string Name => "cd";
     private string? homePath = Environment.GetEnvironmentVariable("HOME");
 
-    public void RunCommand(string[] arg)
+    public void RunCommand(string arg)
     {
         if(arg[1] == "~")
         {

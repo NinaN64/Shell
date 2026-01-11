@@ -9,23 +9,23 @@ public class TypeCommand : DefaultCommand
         this.commandDictionary = commandDictionary;
     }
 
-    public void RunCommand(string[] arg)
+    public void RunCommand(string arg)
     {
-        if(commandDictionary.isCommandABuiltIn(arg[1]))
+        if(commandDictionary.isCommandABuiltIn(arg))
         {
             Console.WriteLine(arg[1] + " is a shell builtin");
         }
         else
         {
             PathFinder pathFinder = new PathFinder();
-            string firstOrDefault = pathFinder.checkFullPath(arg[0]);
+            string firstOrDefault = pathFinder.checkFullPath(arg);
             if (!string.IsNullOrWhiteSpace(firstOrDefault)) 
             {
-                Console.WriteLine($"{arg[0]} is {firstOrDefault}");
+                Console.WriteLine($"{arg} is {firstOrDefault}");
             } 
             else 
             {
-                Console.WriteLine($"{arg[0]}: not found");
+                Console.WriteLine($"{arg}: not found");
             }
         }
     }

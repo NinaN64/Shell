@@ -21,7 +21,7 @@ public class Shell
             if(string.IsNullOrWhiteSpace(input)) continue;
 
             string commandName = input.Split(" ")[0];
-            string[] listOfArg = input.Split(" ");
+            string listOfArg = input.Substring(commandName.Length);
 
             if(commandDictionary.isCommandABuiltIn(commandName))
             {
@@ -37,7 +37,7 @@ public class Shell
 
             if (fullPath != null)
             {
-                Process.Start(commandName, listOfArg[1..]).WaitForExit();
+                Process.Start(commandName, listOfArg).WaitForExit();
             }
             else
             {
