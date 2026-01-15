@@ -11,7 +11,8 @@ class Program
             new EchoCommand(),
             new ExitCommand(),
             new PwdCommand(),
-            new TypeCommand(commandDictionary)
+            new TypeCommand(commandDictionary),
+            new CatCommand()
         };
 
         foreach(var com in ListOfCommands)
